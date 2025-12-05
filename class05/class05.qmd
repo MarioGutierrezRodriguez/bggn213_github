@@ -1,32 +1,35 @@
 ---
 title: "Class05: Data Viz with GGPLOT"
 author: "Mario Gutierrez (PID A69043009)"
-format: pdf
-editor: visual
+format: gfm
 ---
 
 Today we are playing with plotting and graphics in R.
 
-There are lots of ways to make cool figures in R.
-There is "base" R graphics (`plot()`, `hist()`, `boxplot()`, etc.)
+There are lots of ways to make cool figures in R. There is "base" R graphics (`plot()`, `hist()`, `boxplot()`, etc.)
 
 There is also add-on packages, like **ggplot**
 
 ```{r}
 head(cars, 3)
 ```
+
 Let's plot this with "base" R:
 
 ```{r}
 plot(cars)
 ```
+
 ```{r}
 head(mtcars)
 ```
+
 Let's plot `mpg` vs `disp`
+
 ```{r}
 plot(mtcars$mpg, mtcars$disp, pch=10)
 ```
+
 ```{r}
 hist(mtcars$mpg)
 ```
@@ -43,6 +46,7 @@ ggplot(cars) +
   aes(x=speed, y=dist) +
   geom_point()
 ```
+
 ```{r}
 ggplot(cars) +
   aes(speed) +
@@ -51,9 +55,9 @@ ggplot(cars) +
 
 Every ggplot needs at least 3 things:
 
-- The **data** (given with `ggplot(cars)`)
-- The **aesthetic** mapping (given with `aes()`)
-- The **geom** (given by `geom_point()`)
+-   The **data** (given with `ggplot(cars)`)
+-   The **aesthetic** mapping (given with `aes()`)
+-   The **geom** (given by `geom_point()`)
 
 > For simple canned plots or graphs "base" R is nearly always faster.
 
@@ -99,11 +103,13 @@ ggplot(cars) +
 ## Plot some expression data
 
 Read file on line
+
 ```{r}
 url <- "https://bioboot.github.io/bimm143_S20/class-material/up_down_expression.txt"
 genes <- read.delim(url)
 head(genes)
 ```
+
 > Q1. How many genes are in this wee daaset?
 
 There are `r nrow(genes)` in this dataset
@@ -113,7 +119,9 @@ There are `r nrow(genes)` in this dataset
 ```{r}
 sum(genes$State == "up")
 ```
+
 There are `r sum(genes$State == "up")` of genes
+
 ```{r}
 table(genes$State)
 ```
@@ -123,6 +131,7 @@ ggplot(genes) +
   aes(x=Condition1, y=Condition2, col=Condition2) +
   geom_point()
 ```
+
 ```{r}
 p <- ggplot(genes) + 
   aes(x=Condition1, y=Condition2, col=State) +
@@ -135,7 +144,7 @@ p <- ggplot(genes) +
 ```{r}
 p 
 ```
-```{r}
+
 ```{r}
 ggplot(genes) + 
   aes(x=Condition1, y=Condition2, col=State,
@@ -146,7 +155,6 @@ ggplot(genes) +
 
 
 ```
-
 
 ```{r}
 library(ggrepel)
@@ -173,9 +181,11 @@ gapminder <- read.delim(url)
 ```{r}
 head(gapminder)
 ```
+
 ```{r}
 tail(gapminder)
 ```
+
 ```{r}
 ggplot(gapminder) +
   aes(x=gdpPercap, y=lifeExp, col=continent) +
@@ -183,6 +193,7 @@ ggplot(gapminder) +
   facet_wrap(~continent) +
   theme_bw()
 ```
+
 ```{r}
 ggplot(gapminder) +
   aes(x=gdpPercap, y=lifeExp, col=continent) +
@@ -190,5 +201,3 @@ ggplot(gapminder) +
   facet_wrap(~continent) +
   theme_bw()
 ```
-
-
