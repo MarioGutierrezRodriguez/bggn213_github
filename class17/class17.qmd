@@ -1,0 +1,102 @@
+---
+title: "Class 17: Introduction to Genome Informatics Lab"
+author: "Mario Gutierrez (PID: A69043009)"
+format: pdf
+---
+
+## Section 1. Proportion of G/F in a population
+
+Downloaded a CSV file from Ensemble <https://useast.ensembl.org/Homo_sapiens/Variation/Sample?db=core;r=17:39894595-39895595;v=rs8067378;vdb=variation;vf=959672880#373531_tablePanel> 
+
+Here we read this CSV file 
+
+```{r}
+mxl <- read.csv("373531-SampleGenotypes-Homo_sapiens_Variation_Sample_rs8067378.csv")
+
+head(mxl)
+```
+
+> Q5: What proportion of the Mexican Ancestry in Los Angeles sample population (MXL) are
+homozygous for the asthma associated SNP (G|G)?
+
+```{r}
+table(mxl$Genotype..forward.strand.)
+```
+
+```{r}
+table(mxl$Genotype..forward.strand.) / nrow(mxl) * 100
+```
+
+Now let's look at a different population. I picked the GBR.
+
+```{r}
+gbr <- read.csv("373522-SampleGenotypes-Homo_sapiens_Variation_Sample_rs8067378.csv")
+
+head(gbr)
+```
+
+Find proportion of G|G
+
+```{r}
+round(table(gbr$Genotype..forward.strand.) / nrow(gbr) * 100, 2)
+```
+This varient that is associated with childhood asthma is more frequent in the GBR population than the MXL population. 
+
+Let's now dig into this further.
+
+## Section 4: Population Scale Analysis
+
+One sample is obviously not enough to know what is happening in a population. You are interested in assessing genetic differences on a population scale. 
+
+So, you processed about ~230 samples and did the normalization on a genome level. Now, you want to find whether there is any association of the 4 asthma-associated SNPs (rs8067378…) on ORMDL3 expression.
+
+How many samples do we have?
+
+```{r}
+expr <- read.table("rs8067378_ENSG00000172057.6.txt")
+
+head(expr)
+```
+> Q13: Read this file into R and determine the sample size for each genotype and their
+corresponding median expression levels for each of these genotypes.
+
+```{r}
+nrow(expr)
+```
+
+```{r}
+table(expr$geno)
+```
+
+```{r}
+median_AA <- median(expr$exp[expr$geno == "A/A"])
+median_AG <- median(expr$exp[expr$geno == "A/G"])
+median_GG <- median(expr$exp[expr$geno == "G/G"])
+
+median_AA
+median_AG
+median_GG
+```
+
+```{r}
+library(ggplot2)
+
+```
+> Q14: Generate a boxplot with a box per genotype, what could you infer from the relative expression value between A/A and G/G displayed in this plot? Does the SNP effect the expression of ORMDL3?
+
+Yes, the SNP affects ORMDL3 expression, making the homozygous G|G have lower expression levels compared to the heterozygous A|G an normal homozygous A|A. 
+
+Let's make a boxplot
+
+
+```{r}
+ggplot(expr) +
+  aes(x=geno, y=exp, fill=geno) +
+  geom_boxplot(notch = TRUE)
+```
+
+
+
+
+
+
